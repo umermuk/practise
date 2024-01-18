@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -46,6 +47,21 @@ class DatabaseSeeder extends Seeder
             'name' => 'Product 4',
             'price' => 400,
             'desc' => 'This is product 4',
+        ]);
+
+        \App\Models\User::create([
+            'name' => "admin",
+            'role' => "admin",
+            'email' => "admin@gmail.com",
+            'password' => Hash::make(12345678),
+        ]);
+
+
+        \App\Models\User::create([
+            'name' => "user",
+            'role' => "user",
+            'email' => "user@gmail.com",
+            'password' => Hash::make(12345678),
         ]);
     }
 }

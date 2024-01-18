@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -29,3 +30,27 @@ Route::controller(PaypalController::class)
         Route::get('cancel-payment', 'paymentCancel')->name('cancel.payment');
         Route::get('payment-success', 'paymentSuccess')->name('success.payment');
     });
+
+Route::prefix('admin')->as('admin.')->group(function () {
+    Route::middleware('adminLogin')->group(function () {
+        Route::get('/login', [AuthController::class, 'adminLogin'])->name('login');
+        Route::post('/login-process', [AuthController::class, 'adminLoginProcess'])->name('login.process');
+    });
+
+    Route::middleware('adminDashboard')->group(function () {
+        Route::get('/dashboard', [AuthController::class, 'adminDashboard'])->name('dashboard');
+        Route::get('/logout', [AuthController::class, 'adminlogout'])->name('logout');
+    });
+});
+
+Route::prefix('user')->as('user.')->group(function () {
+    Route::middleware('userLogin')->group(function () {
+        Route::get('/login', [AuthController::class, 'userLogin'])->name('login');
+        Route::post('/login-process', [AuthController::class, 'userLoginProcess'])->name('login.process');
+    });
+
+    Route::middleware('userDashboard')->group(function () {
+        Route::get('/dashboard', [AuthController::class, 'userDashboard'])->name('dashboard');
+        Route::get('/logout', [AuthController::class, 'userlogout'])->name('logout');
+    });
+});
